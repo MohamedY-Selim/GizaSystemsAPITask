@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   test:
@@ -29,10 +30,9 @@ jobs:
           restore-keys: |
             maven-${{ runner.os }}-
 
-      - name: Run tests
+      - name: Run tests (keep going to publish report)
         run: |
-          mvn -B -q test -Dallure.results.directory=target/allure-results || true
-          # نضمن دايركتوري النتائج موجود حتى لو مفيش تيستس/فيلت بدري
+          mvn -B clean test -Dallure.results.directory=target/allure-results || true
           mkdir -p target/allure-results
 
       - name: Upload allure-results artifact
