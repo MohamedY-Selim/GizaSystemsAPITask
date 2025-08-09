@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             maven-${{ runner.os }}-
 
-      - name: Run tests (keep going to publish report)
+      - name: Run tests
         run: |
           mvn -B clean test -Dallure.results.directory=target/allure-results || true
           mkdir -p target/allure-results
@@ -55,11 +55,11 @@ jobs:
             echo
             echo "=== Test Names ==="
             echo "✅ Passed:"
-            xmllint --xpath '//test-method[@status="PASS"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+            xmllint --xpath '//test-method[@status="PASS"]/../@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | grep -v '^$' | sed 's/^/  - /'
             echo "❌ Failed:"
-            xmllint --xpath '//test-method[@status="FAIL"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+            xmllint --xpath '//test-method[@status="FAIL"]/../@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | grep -v '^$' | sed 's/^/  - /'
             echo "⚠️ Skipped:"
-            xmllint --xpath '//test-method[@status="SKIP"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+            xmllint --xpath '//test-method[@status="SKIP"]/../@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | grep -v '^$' | sed 's/^/  - /'
           else
             echo "No testng-results.xml found (maybe no tests ran)."
           fi
