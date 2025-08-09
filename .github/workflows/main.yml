@@ -35,6 +35,42 @@ jobs:
           mvn -B clean test -Dallure.results.directory=target/allure-results || true
           mkdir -p target/allure-results
 
+      - name: Install XML tools (xmllint)
+        if: always()
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
+      - name: Print Test Summary
+        if: always()
+        run: |
+          echo "===== 📝 Test Summary ====="
+          FILE="target/surefire-reports/testng-results.xml"
+          if [ -f "$FILE" ]; then
+            PASSED=$(xmllint --xpath 'string(/testng-results/@passed)' "$FILE")
+            FAILED=$(xmllint --xpath 'string(/testng-results/@failed)' "$FILE")
+            SKIPPED=$(xmllint --xpath 'string(/testng-results/@skipped)' "$FILE")
+            TOTAL=$((PASSED + FAILED + SKIPPED))
+            echo "Total: $TOTAL | ✅ Passed: $PASSED | ❌ Failed: $FAILED | ⚠️ Skipped: $SKIPPED"
+            echo
+            echo "=== Test Names ==="
+            echo "✅ Passed:"
+            xmllint --xpath '//test-method[@status="PASS"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+            echo "❌ Failed:"
+            xmllint --xpath '//test-method[@status="FAIL"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+            echo "⚠️ Skipped:"
+            xmllint --xpath '//test-method[@status="SKIP"]/@name' "$FILE" 2>/dev/null | tr ' ' '\n' | sed 's/name=//g; s/"//g' | sed '/^$/d' | sed 's/^/  - /' || true
+          else
+            echo "No testng-results.xml found (maybe no tests ran)."
+          fi
+
+      - name: Upload surefire reports (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
+
       - name: Upload allure-results artifact
         if: always()
         uses: actions/upload-artifact@v4
