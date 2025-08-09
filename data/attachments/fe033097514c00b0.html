@@ -1,0 +1,55 @@
+<div>POST to https://petstore.swagger.io/v2/pet</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;id&quot;: 195121839,
+    &quot;category&quot;: {
+        &quot;id&quot;: 13428348,
+        &quot;name&quot;: &quot;trout&quot;
+    },
+    &quot;name&quot;: &quot;pet-giraffe-195121839&quot;,
+    &quot;tags&quot;: [
+        {
+            &quot;id&quot;: 996412542,
+            &quot;name&quot;: &quot;maroon&quot;
+        }
+    ],
+    &quot;status&quot;: &quot;available&quot;,
+    &quot;photoUrls&quot;: [
+        &quot;https://picsum.photos/seed/56b849f7-62a8-4857-a818-5e0e12dc0c31/600/400&quot;
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;https://petstore.swagger.io/v2/pet&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;id&quot;: 195121839,
+    &quot;category&quot;: {
+        &quot;id&quot;: 13428348,
+        &quot;name&quot;: &quot;trout&quot;
+    },
+    &quot;name&quot;: &quot;pet-giraffe-195121839&quot;,
+    &quot;tags&quot;: [
+        {
+            &quot;id&quot;: 996412542,
+            &quot;name&quot;: &quot;maroon&quot;
+        }
+    ],
+    &quot;status&quot;: &quot;available&quot;,
+    &quot;photoUrls&quot;: [
+        &quot;https://picsum.photos/seed/56b849f7-62a8-4857-a818-5e0e12dc0c31/600/400&quot;
+    ]
+}&#39;
+    </div>
+
