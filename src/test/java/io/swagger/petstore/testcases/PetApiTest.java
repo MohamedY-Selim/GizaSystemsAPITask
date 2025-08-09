@@ -25,7 +25,7 @@ public class PetApiTest extends BaseTest {
     }
 
     @Test(description = "Create new pet and validate response")
-    public void createPet_shouldSucceed() {
+    public void createPet() {
         Pet newPet = PetUtils.randomPet();
 
         Response resp = petApi.createPet(newPet);
@@ -40,7 +40,7 @@ public class PetApiTest extends BaseTest {
     }
 
     @Test(description = "Get random pet by id (picked from findByStatus) and extract its name")
-    public void getPetById_shouldReturnName() {
+    public void getPetById() {
         Response listResp = petApi.findPetsByStatus("available");
         assertStatus(listResp, 200);
 
@@ -59,7 +59,7 @@ public class PetApiTest extends BaseTest {
     }
 
     @Test(description = "Find pets by status and collect names")
-    public void findByStatus_shouldReturnNames() {
+    public void findByStatus() {
         Response resp = petApi.findPetsByStatus("available");
         assertStatus(resp, 200);
 
